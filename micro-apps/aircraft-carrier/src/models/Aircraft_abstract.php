@@ -5,9 +5,11 @@ abstract class Aircraft {
   protected $currentAmmo;
   protected $baseDamage;
 
-  protected function __construct()
+  protected function __construct(int $ammoCapacity, int $dmg)
   {
-
+    $this->maxAmmo = $ammoCapacity;
+    $this->currentAmmo = 0;
+    $this->baseDamage = $dmg;
   }
 
   protected function fight() : int
@@ -18,10 +20,31 @@ abstract class Aircraft {
   }
 
   protected function refill(int $ammoStash) : int 
-  {
-    
+  { 
+    (int) $ammoNeeded = $this->maxAmmo - $this->currentAmmo;
+    (int) $remainingAmmo = $ammoStash - $ammoNeeded;
+
+    if ($remainingAmmo >= $ammoNeeded) {
+      $this->currentAmmo = $this->maxAmmo;
+      return $remainingAmmo;
+    } elseif ($remainingAmmo < $ammoNeeded && $remainingAmmo > 0) {
+      $this->currentAmmo += $remainingAmmo;
+      return $remainingAmmo;
+    } else {
+      $this->currentAmmo += $ammoStash;
+      return 0;
+    }
   }
 
+  protected function getStatus() : string 
+  {
+    $maxDmgOutput = $this->currentAmmo * $this->baseDamage;
+    return "Type: {$this->getType}\nAmmo: {$this->currentAmmo}\nBase Damage: {$this->baseDamage}\nAll Damage: $maxDmgOutput}\n";
+  }
+
+  abstract protected function getType() : string;
+
+  abstract protected function isPriority() : bool;
 }
 
 ?>
