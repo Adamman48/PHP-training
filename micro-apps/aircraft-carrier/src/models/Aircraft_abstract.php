@@ -7,9 +7,9 @@ abstract class Aircraft {
 
   protected function __construct(int $ammoCapacity, int $dmg)
   {
-    $this->maxAmmo = $ammoCapacity;
-    $this->currentAmmo = 0;
-    $this->baseDamage = $dmg;
+    (int) $this->maxAmmo = $ammoCapacity;
+    (int) $this->currentAmmo = 0;
+    (int) $this->baseDamage = $dmg;
   }
 
   protected function fight() : int
@@ -24,13 +24,16 @@ abstract class Aircraft {
     (int) $ammoNeeded = $this->maxAmmo - $this->currentAmmo;
     (int) $remainingAmmo = $ammoStash - $ammoNeeded;
 
-    if ($remainingAmmo >= $ammoNeeded) {
+    if ($remainingAmmo >= $ammoNeeded) 
+    {
       $this->currentAmmo = $this->maxAmmo;
       return $remainingAmmo;
-    } elseif ($remainingAmmo < $ammoNeeded && $remainingAmmo > 0) {
+    } elseif ($remainingAmmo < $ammoNeeded && $remainingAmmo > 0) 
+    {
       $this->currentAmmo += $remainingAmmo;
       return $remainingAmmo;
-    } else {
+    } else 
+    {
       $this->currentAmmo += $ammoStash;
       return 0;
     }
